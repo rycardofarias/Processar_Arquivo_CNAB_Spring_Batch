@@ -5,7 +5,6 @@ import com.example.processar_arq_cnab.dtos.TransactionCNAB;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
@@ -27,8 +26,8 @@ import java.math.BigDecimal;
 @Configuration
 public class BatchConfig {
 
-    private PlatformTransactionManager transactionManager;
-    private JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
+    private final JobRepository jobRepository;
 
     public BatchConfig(PlatformTransactionManager transactionManager, JobRepository jobRepository) {
         this.transactionManager = transactionManager;
@@ -39,7 +38,6 @@ public class BatchConfig {
     Job job(Step step) {
         return new JobBuilder("job", jobRepository)
                 .start(step)
-                .incrementer(new RunIdIncrementer())
                 .build();
     }
 
@@ -69,6 +67,7 @@ public class BatchConfig {
                 .build();
     }
 
+    @Bean
     ItemProcessor<TransactionCNAB, Transaction> processor() {
         return item -> {
             var transaction = new Transaction(
@@ -88,7 +87,7 @@ public class BatchConfig {
         return new JdbcBatchItemWriterBuilder<Transaction>()
                 .dataSource(dataSource)
                 .sql("""
-                        INSERT INTO trasaction (
+                        INSERT INTO transaction (
                         tipo, data, valor, cpf, cartao, hora,
                         dono_loja, nome_loja
                         ) VALUES (
