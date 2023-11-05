@@ -83,4 +83,20 @@ public class BatchConfig {
         };
     }
 
+    @Bean
+    JdbcBatchItemWriter<Transaction> writer(DataSource dataSource) {
+        return new JdbcBatchItemWriterBuilder<Transaction>()
+                .dataSource(dataSource)
+                .sql("""
+                        INSERT INTO trasaction (
+                        tipo, data, valor, cpf, cartao, hora,
+                        dono_loja, nome_loja
+                        ) VALUES (
+                            :tipo, :data, :valor, :cpf, :cartao, :hora,
+                            :donoLoja, :nomeLoja
+                        )
+                        """)
+                .beanMapped()
+                .build();
+    }
 }
