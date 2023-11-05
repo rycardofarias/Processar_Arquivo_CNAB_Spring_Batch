@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.math.BigDecimal;
+
 @Configuration
 public class BatchConfig {
 
@@ -62,5 +64,19 @@ public class BatchConfig {
                 .names("type", "date", "value", "cpf", "card", "time", "storeOwner", "storeName")
                 .targetType(TransactionCNAB.class)
                 .build();
+    }
+
+    ItemProcessor<TransactionCNAB, Transaction> processor() {
+        return item -> {
+            var transaction = new Transaction(
+                    null, item.type(), null, null, item.cpf(),
+                    item.card(), null, item.storeOwner().trim(),
+                    item.storeName().trim())
+                    .withValue(item.value().divide(BigDecimal.valueOf(100)))
+                    .withDate(item.date())
+                    .withTime(item.time());
+
+            return transaction;
+        };
     }
 }
