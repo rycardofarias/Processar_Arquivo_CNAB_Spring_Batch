@@ -8,21 +8,21 @@ import java.text.SimpleDateFormat;
 
 public record Transaction(
       Long id,
-      Integer type,
-      Date date,
-      BigDecimal value,
+      Integer tipo,
+      Date data,
+      BigDecimal valor,
       Long cpf,
-      String card,
-      Time time,
-      String storeOwner,
-      String storeName){
+      String cartao,
+      Time hora,
+      String donoLoja,
+      String nomeLoja){
 
-    public Transaction withValue(BigDecimal value) {
+    public Transaction withValue(BigDecimal valor) {
         return new Transaction(
-                this.id(), this.type(), this.date(),
-                value,
-                this.cpf(), this.card(), this.time(),
-                this.storeOwner(), this.storeName());
+                this.id(), this.tipo(), this.data(),
+                valor,
+                this.cpf(), this.cartao(), this.hora(),
+                this.donoLoja(), this.nomeLoja());
     }
 
     public Transaction withDate(String date) throws ParseException{
@@ -30,10 +30,10 @@ public record Transaction(
         var dt = dtFormat.parse(date);
 
         return new Transaction(
-                this.id(), this.type(), new Date(dt.getTime()),
-                this.value, this.cpf(),
-                this.card(), this.time(),
-                this.storeOwner(), this.storeName());
+                this.id(), this.tipo(), new Date(dt.getTime()),
+                this.valor, this.cpf(),
+                this.cartao(), this.hora(),
+                this.donoLoja(), this.nomeLoja());
     }
 
     public Transaction withTime(String time) throws ParseException{
@@ -41,9 +41,9 @@ public record Transaction(
         var dt = dtFormat.parse(time);
 
         return new Transaction(
-                this.id(), this.type(), this.date(),
-                this.value, this.cpf(),
-                this.card(), new Time(date.getTime()),
-                this.storeOwner(), this.storeName());
+                this.id(), this.tipo(), this.data(),
+                this.valor, this.cpf(),
+                this.cartao(), new Time(data.getTime()),
+                this.donoLoja(), this.nomeLoja());
     }
 }

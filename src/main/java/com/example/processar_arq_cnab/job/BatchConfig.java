@@ -11,6 +11,8 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.transform.Range;
@@ -19,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.sql.DataSource;
 import java.math.BigDecimal;
 
 @Configuration
@@ -61,7 +64,7 @@ public class BatchConfig {
                 .fixedLength()
                 .columns(new Range(1, 1), new Range(2, 9), new Range(10, 19), new Range(20, 30),
                         new Range(31, 42), new Range(43, 48), new Range(49, 62), new Range(63, 80))
-                .names("type", "date", "value", "cpf", "card", "time", "storeOwner", "storeName")
+                .names("tipo", "data", "valor", "cpf", "cartao", "hora", "donoLoja", "nomeLoja")
                 .targetType(TransactionCNAB.class)
                 .build();
     }
@@ -69,14 +72,15 @@ public class BatchConfig {
     ItemProcessor<TransactionCNAB, Transaction> processor() {
         return item -> {
             var transaction = new Transaction(
-                    null, item.type(), null, null, item.cpf(),
-                    item.card(), null, item.storeOwner().trim(),
-                    item.storeName().trim())
-                    .withValue(item.value().divide(BigDecimal.valueOf(100)))
-                    .withDate(item.date())
-                    .withTime(item.time());
+                    null, item.tipo(), null, null, item.cpf(),
+                    item.cartao(), null, item.donoLoja().trim(),
+                    item.nomeLoja().trim())
+                    .withValue(item.valor().divide(BigDecimal.valueOf(100)))
+                    .withDate(item.data())
+                    .withTime(item.hora());
 
             return transaction;
         };
     }
+
 }

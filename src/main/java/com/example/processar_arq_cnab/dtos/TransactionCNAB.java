@@ -3,13 +3,13 @@ package com.example.processar_arq_cnab.dtos;
 import java.math.BigDecimal;
 
 public record TransactionCNAB(
-    Integer type,
-    String date,
-    BigDecimal value,
+    Integer tipo,
+    String data,
+    BigDecimal valor,
     Long cpf,
-    String card,
-    String time,
-    String storeOwner,
-    String storeName){
+    String cartao,
+    String hora,
+    String donoLoja,
+    String nomeLoja){
 
 }
