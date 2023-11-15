@@ -71,10 +71,12 @@ public class BatchConfig {
     ItemProcessor<TransactionCNAB, Transaction> processor() {
         return item -> {
             var transaction = new Transaction(
-                    null, item.tipo(), null, null, item.cpf(),
-                    item.cartao(), null, item.donoLoja().trim(),
+                    null, item.tipo(), null,
+                    item.valor().divide(BigDecimal.valueOf(100)),
+                    item.cpf(),
+                    item.cartao(), null,
+                    item.donoLoja().trim(),
                     item.nomeLoja().trim())
-                    .withValue(item.valor().divide(BigDecimal.valueOf(100)))
                     .withDate(item.data())
                     .withTime(item.hora());
 
