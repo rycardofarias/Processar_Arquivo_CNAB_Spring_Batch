@@ -9,4 +9,5 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 
     //select * from transaction order by nome_loja asc, id desc
     List<Transaction> findAllByOrderByNomeLojaAscIdDesc();
+
 }

@@ -1,6 +1,7 @@
 package com.example.processar_arq_cnab.controllers;
 
 import com.example.processar_arq_cnab.dtos.Transaction;
+import com.example.processar_arq_cnab.dtos.TransactionReport;
 import com.example.processar_arq_cnab.services.TransactionService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class TransactionController {
     }
 
     @GetMapping
-    List<Transaction> listAll() {
+    List<TransactionReport> listAll() {
         return transactionService.listTotalTransactionsByStoreName();
     }
 }
