@@ -12,7 +12,7 @@ public record TransactionReport(
         return new TransactionReport(nomeLoja, total.add(valor), transactions);
     }
 
-    public TransactionReport addTransacao(Transaction transaction){
+    public TransactionReport addTransaction(Transaction transaction){
         transactions.add(transaction);
         return new TransactionReport(nomeLoja, total, transactions);
     }
